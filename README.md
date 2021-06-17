@@ -134,3 +134,11 @@ https://www.mongodb.com/cloud/atlas/lp/try2?utm_source=google&utm_campaign=gs_ap
 ## apply env
 
 ## connect to mongoDB
+
+## mongoDB atlas clusters collection 설정
+
+사용하려는 database 추가
+
+## EJS사용법
+
+- npm install ejs

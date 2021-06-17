@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 app.use(express.urlencoded({ extended: true }));
+// ejs사용하겠다 선언
+app.set('view engine', 'ejs');
 require('dotenv').config();
 
 // 생성하려는 PORT번호 설정
@@ -20,11 +22,20 @@ const mongoDBurl =
   '@cluster0.ay4zt.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 // console.log(mongoDBurl);
 
+let db;
 // 연결 설정
 MongoClient.connect(
   mongoDBurl,
   { useUnifiedTopology: true },
   (error, client) => {
+    // error 핸들링 및 early return
+    if (error) {
+      return console.log(error);
+    }
+
+    // todoapp이라는 database에 연결 요청
+    db = client.db('todoapp');
+
     app.listen(PORT, function () {
       console.log('listening on ' + PORT);
     });
@@ -54,5 +65,15 @@ app.get('/write', (req, res) => {
 app.post('/add', (req, res) => {
   //   res.sendFile(__dirname + 'add.html');
   console.log(req.body);
+  const { title, date } = req.body;
+  // post라는 collection에 하나를 저장할것임
+  db.collection('post').insertOne({ title, date }, (error, result) => {
+    console.log('저장완료');
+  });
   res.send('전송완료');
+});
+
+// ejs를 사용하는 list 요청처리
+app.get('/list', (req, res) => {
+  res.render(__dirname + '/views/list.ejs');
 });
