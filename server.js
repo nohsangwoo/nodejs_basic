@@ -66,8 +66,7 @@ app.post('/add', (req, res) => {
   //   res.sendFile(__dirname + 'add.html');
   console.log(req.body);
   const { title, date } = req.body;
-  let totalPost;
-  // post라는 collection에 하나를 저장할것임
+  //   counter에서 현재 저장된 총 게시물의 갯수를 불러옴
   db.collection('counter').findOne(
     { name: 'numberOfPost' },
     (error, result) => {
@@ -75,16 +74,37 @@ app.post('/add', (req, res) => {
         return console.log(error);
       }
       console.log(result);
-      totalPost = result.totalPost;
+      let prevTotalPost = result.totalPost;
+
+      // post라는 collection에 하나를 저장할것임
+      //   총게시물 개수 +1로 아이디를 지정하고 나머지 데이터 저장
+      db.collection('post').insertOne(
+        { _id: prevTotalPost + 1, title, date },
+        (error, result) => {
+          console.log('DB 저장완료');
+
+          //   counter라는 콜렉션에 있는 totalPost 라는 항목도 1 증가시켜주기(수정)
+          //  arg1: 수정할 데이터 조건, arg2:수정값, ags3: 결과 처리
+          db.collection('counter').updateOne(
+            { name: 'numberOfPost' },
+            // update operator
+            // $set :{변결할 변수 : 변경할 값}
+            // $inc(증가)
+            // min(기존값보다 적을때만 변경)
+            // rename(key값 이름 변경)
+            // ...
+            { $inc: { totalPost: 1 } },
+            (error, result) => {
+              if (error) {
+                return console.log(error);
+              }
+              console.log('counter 증가 완료');
+            }
+          );
+        }
+      );
 
       //   db.collection('counter').
-    }
-  );
-
-  db.collection('post').insertOne(
-    { _id: totalPost + 1, title, date },
-    (error, result) => {
-      console.log('저장완료');
     }
   );
 
