@@ -75,5 +75,5 @@ app.post('/add', (req, res) => {
 
 // ejs를 사용하는 list 요청처리
 app.get('/list', (req, res) => {
-  res.render(__dirname + '/views/list.ejs');
+  res.render('list.ejs');
 });
