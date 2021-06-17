@@ -48,31 +48,47 @@
         </ul>
       </div>
     </nav>
+    <h4 class="ml-2 my-3">Todo List from mongoDB server</h4>
+
     <article style="padding: 30px">
-      <h1>list</h1>
-      <% posts.forEach((post,index)=>{ %>
-      <div
-        style="
-          padding: 10px;
-          border-radius: 10px;
-          border: 1px solid black;
-          margin-bottom: 10px;
-        "
-      >
-        <p>_id: <%= post._id %></p>
-        <h4>할일 제목 : <%= post.title %></h4>
-        <p>할일 마감날짜: <%= post.date %></p>
-      </div>
-      <% }) %>
+      <ul class="list-group">
+        <% posts.forEach((post,index)=>{ %>
+        <li
+          style="
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid black;
+            margin-bottom: 10px;
+          "
+          class="list-group-item"
+        >
+          <p>_id: <%= post._id %></p>
+          <h4>할일 제목 : <%= post.title %></h4>
+          <p>할일 마감날짜: <%= post.date %></p>
+          <button type="button" class="btn btn-dark">삭제</button>
+        </li>
+        <% }) %>
+      </ul>
     </article>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <!-- Jquery를 이용한 ajax사용 -->
+    <script>
+      // ajax기본문법
+      // 서버에 새로고침없이 DELETE요청한다는 의미
+      $.ajax({
+        method: 'DELETE',
+        url: '/delete',
+        data: '게시물 번호',
+        // 요청이 성공하면 done의 내용을 실행한다.
+      }).done(result => {});
+    </script>
+
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-      crossorigin="anonymous"
-    ></script>
+
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"

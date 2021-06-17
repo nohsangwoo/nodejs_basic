@@ -124,3 +124,8 @@ app.get('/list', (req, res) => {
       res.render('list.ejs', { posts: result });
     });
 });
+
+// delete
+app.delete('/delete', (req, res) => {
+  console.log(req.body);
+});

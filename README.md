@@ -151,3 +151,9 @@ https://www.mongodb.com/cloud/atlas/lp/try2?utm_source=google&utm_campaign=gs_ap
 
 - 수동으로 총 갯수 세어주고 따로 db에 저장해두는 방법 사용
 - id를 이제 총게시물 수 +1 로 지정
+
+## fix css
+
+## use AJAX
+
+- 새로고침 없이 서버에 요청하는걸 도와주는 JS문법
