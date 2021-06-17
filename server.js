@@ -66,10 +66,28 @@ app.post('/add', (req, res) => {
   //   res.sendFile(__dirname + 'add.html');
   console.log(req.body);
   const { title, date } = req.body;
+  let totalPost;
   // post라는 collection에 하나를 저장할것임
-  db.collection('post').insertOne({ title, date }, (error, result) => {
-    console.log('저장완료');
-  });
+  db.collection('counter').findOne(
+    { name: 'numberOfPost' },
+    (error, result) => {
+      if (error) {
+        return console.log(error);
+      }
+      console.log(result);
+      totalPost = result.totalPost;
+
+      //   db.collection('counter').
+    }
+  );
+
+  db.collection('post').insertOne(
+    { _id: totalPost + 1, title, date },
+    (error, result) => {
+      console.log('저장완료');
+    }
+  );
+
   res.send('전송완료');
 });
 

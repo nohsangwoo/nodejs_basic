@@ -146,3 +146,8 @@ https://www.mongodb.com/cloud/atlas/lp/try2?utm_source=google&utm_campaign=gs_ap
 ## mongoDB에서 data 가져오고 list.ejs로 가져온 데이터 전달하기
 
 ## 가져온 데이터 렌더링 하기 with ejs
+
+## mongoDB에서 auto increament 사용방법
+
+- 수동으로 총 갯수 세어주고 따로 db에 저장해두는 방법 사용
+- id를 이제 총게시물 수 +1 로 지정
