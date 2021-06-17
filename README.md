@@ -122,3 +122,15 @@ facebook.com/bbc/photos 이거 딱봐도 BBC뉴스 페북계정의 사진첩인 
 – 하위 문서들을 뜻할 땐 / 기호를 사용함 (하위폴더같은 느낌)
 
 등등 여러가지 존재. 이것만 잘 지켜주시면 예쁜 서버 API들이 완성된다.
+
+## MongoDB atlas 에서 무료 DB사용(500mb한정)
+
+https://www.mongodb.com/cloud/atlas/lp/try2?utm_source=google&utm_campaign=gs_apac_south_korea_search_core_brand_atlas_desktop&utm_term=mongodb%20atlas&utm_medium=cpc_paid_search&utm_ad=e&utm_ad_campaign_id=12212624365&gclid=CjwKCAjwwqaGBhBKEiwAMk-FtDpWMMd4ht5vZ_9bKEKXPMHvUGpqBw7X49veZETWj_3l1Kbbdl5J6hoCwKcQAvD_BwE
+
+```
+
+```
+
+## apply env
+
+## connect to mongoDB
