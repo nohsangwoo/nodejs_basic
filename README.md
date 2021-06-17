@@ -15,3 +15,7 @@
 ## apply bootstrap
 
 ## create index.html & wirte.html
+
+## bodyparser는 이제 express라이브러리에 기본 포함됐음 따로 설치 필요 x
+
+## form 으로 전송된 변수 받아 출력

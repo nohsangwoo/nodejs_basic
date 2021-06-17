@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+app.use(express.urlencoded({ extended: true }));
 
 PORT = 5000;
 
@@ -24,4 +25,11 @@ app.get('/', (req, res) => {
 
 app.get('/write', (req, res) => {
   res.sendFile(__dirname + '/write.html');
+});
+
+// post request 처리
+app.post('/add', (req, res) => {
+  //   res.sendFile(__dirname + 'add.html');
+  console.log(req.body);
+  res.send('전송완료');
 });
