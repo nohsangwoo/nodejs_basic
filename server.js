@@ -75,5 +75,14 @@ app.post('/add', (req, res) => {
 
 // ejs를 사용하는 list 요청처리
 app.get('/list', (req, res) => {
-  res.render('list.ejs');
+  // 해당 post collection에 포함된 모든 데이터를 가져온다
+  db.collection('post')
+    .find()
+    .toArray((error, result) => {
+      if (error) {
+        return console.log(error);
+      }
+      console.log(result);
+      res.render('list.ejs', { posts: result });
+    });
 });

@@ -50,8 +50,12 @@
     </nav>
 
     <h4>list</h4>
+    <% posts.forEach((post,index)=>{ %>
 
-    <p>할일 마감날짜: ????</p>
+    <h4>할일 제목 : <%= post.title %></h4>
+    <p>할일 마감날짜: <%= post.date %></p>
+
+    <% }) %>
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->

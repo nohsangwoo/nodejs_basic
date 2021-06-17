@@ -142,3 +142,7 @@ https://www.mongodb.com/cloud/atlas/lp/try2?utm_source=google&utm_campaign=gs_ap
 ## EJS사용법
 
 - npm install ejs
+
+## mongoDB에서 data 가져오고 list.ejs로 가져온 데이터 전달하기
+
+## 가져온 데이터 렌더링 하기 with ejs
