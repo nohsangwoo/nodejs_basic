@@ -164,9 +164,13 @@ https://www.mongodb.com/cloud/atlas/lp/try2?utm_source=google&utm_campaign=gs_ap
 
 ## 서버에서 삭제된 현황 프론트에서 사용자경험이 좋게 dom 제어
 
+## navigation 모듈화
+
 ## ejs include방식 3에서 변경됨
 
 - include 문법
   xx - <% include ./nav.ejs %> // 이방식은 이제 더이상 사용안됨
   oo - <%- include('nav') %> // 이런 방식으로 사용됨
   oo - <%- include('./nav.ejs') %> // 또는 이런방식으로도 사용됨
+
+## 모든파일 ejs파일로 변경

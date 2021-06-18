@@ -53,12 +53,13 @@ app.get('/beauty', (req, res) => {
 // 요청에대한 응답으로 파일을 보낼수 있음
 // __dirname : 현재 디렉토리 경로
 app.get('/', (req, res) => {
-  // __dirname :
-  res.sendFile(__dirname + '/index.html');
+  // sendFile 사용방법
+  //   res.sendFile(__dirname + '/index.html');
+  res.render('index');
 });
 
 app.get('/write', (req, res) => {
-  res.sendFile(__dirname + '/write.html');
+  res.render('write');
 });
 
 // post request 처리
@@ -120,8 +121,7 @@ app.get('/list', (req, res) => {
       if (error) {
         return console.log(error);
       }
-      console.log(result);
-      res.render('list.ejs', { posts: result });
+      res.render('list', { posts: result });
     });
 });
 
@@ -142,5 +142,5 @@ app.delete('/delete', (req, res) => {
 });
 
 app.get('/detail', (req, res) => {
-  res.render('detail.ejs');
+  res.render('detail');
 });
