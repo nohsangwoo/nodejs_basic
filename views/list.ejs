@@ -38,8 +38,12 @@
           class="p-4 mb-5 list-group-item list-<%= post._id %>"
         >
           <p>_id: <%= post._id %></p>
-          <h4>할일 제목 : <%= post.title %></h4>
-          <p>할일 마감날짜: <%= post.date %></p>
+          <h4 class="title-<%= post._id %>">
+            할일 제목 : <input type="text" value="<%= post.title %>" />
+          </h4>
+          <p class="text-<%= post._id %>">
+            할일 마감날짜: <input type="text" value="<%= post.date %>" />
+          </p>
 
           <!-- data-id : 버튼을 누를때 실행되는 함수에 해당 변수 전달 -->
           <!-- data-(전달되는 변수명): ,즉 받아올땐 "data-"는 제외되고 "id"란 변수명에 값이 넣어져서 전달됨 -->
@@ -50,18 +54,43 @@
           >
             삭제
           </button>
+
+          <button
+            data-id="<%= post._id %>"
+            data-title="<%= post.title %>"
+            data-date="<%= post.date %>"
+            type="button"
+            class="btn btn-danger update<%= post._id %>"
+            onclick="onUpdate()"
+          >
+            수정
+          </button>
         </li>
         <% }) %>
       </ul>
+      <!--  -->
+
+      <label for="domTextElement">Name: </label>
+      <input type="text" class="domTextElement" />
+
+      <button type="button" onclick="getValueInput()">click me!!</button>
+
+      <p id="valueInput"></p>
+      <!--  -->
     </article>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <!-- Jquery를 이용한 ajax사용 -->
     <script>
+      const getValueInput = () => {
+        let inputValue = document.getElementsByClassName('domTextElement');
+        console.log(inputValue);
+        document.getElementById('valueInput').innerHTML = inputValue;
+      };
+      // 삭제 기능
       $('.delete').click(e => {
         const _id = e.target.dataset.id;
-
         const thisDom = $('.list-' + _id);
 
         // ajax기본문법
@@ -82,6 +111,69 @@
             console.log(xhr, textStatus, errorThrown);
           });
       });
+
+      // update onkeyup
+      const onUpdateKeyup = function (e) {
+        console.log(e);
+      };
+      // 수정기능
+      const onUpdate = function (e) {
+        console.log('e', e);
+        const updateBTN = document.querySelector('.update');
+        // console.log(updateBTN.dataset);
+        const { id: _id, title, date } = updateBTN.dataset;
+        console.log(_id, title, date);
+        // console.log(e, 'asdfasdf');
+        const thisTitle = '.title-' + _id;
+        console.log(thisTitle);
+        let inputValue = document.getElementsByClassName(thisTitle);
+        console.log(inputValue);
+      };
+
+      // $('.update').click(e => {
+      //   const _id = e?.target?.dataset?.id;
+      //   const title = e?.target?.dataset?.title;
+      //   const date = e?.target?.dataset?.date;
+
+      //   console.log(_id, title, date);
+      //   const thisDom = $('.list-' + _id);
+
+      //   const thisTitle = $('.title-' + _id);
+      //   const thisText = $('.text-' + _id);
+
+      //   let inputValue = document.getElementsByClassName(thisTitle);
+      //   console.log(inputValue);
+      //   // function printTitle() {
+      //   //   const getTitle = document.getElementsByClassName(thisTitle).value;
+      //   //   return getTitle;
+      //   // }
+
+      //   // console.log('getTitle: ', printTitle());
+
+      //   console.log('thisTitle', thisTitle, thisText);
+
+      //   // console.log(thisDom);
+
+      //   return;
+      //   // ajax기본문법
+      //   // 서버에 새로고침없이 DELETE요청한다는 의미
+      //   $.ajax({
+      //     method: 'PUT',
+      //     url: '/edit',
+      //     data: { _id, title, date },
+      //     // 요청이 성공하면 done의 내용을 실행한다.
+      //   })
+      //     .done(result => {
+      //       // 현재 click이벤트가 작동된 html의 태그를 찾아서 서서히 안보이게 해라
+      //       // thisDom.fadeOut();
+      //       console.log('보내기 성공');
+      //     })
+      //     // 요청이 실패시 실핸되는 코드
+      //     // arg1: , arg2: 서버에서 받은 응답코드, agr3: 서버에서 받은 에러 메시지
+      //     .fail((xhr, textStatus, errorThrown) => {
+      //       console.log(xhr, textStatus, errorThrown);
+      //     });
+      // });
     </script>
 
     <!-- Optional JavaScript; choose one of the two! -->

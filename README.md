@@ -180,3 +180,9 @@ https://www.mongodb.com/cloud/atlas/lp/try2?utm_source=google&utm_campaign=gs_ap
 ## parameter 전달 및 받아오는법 리마인드
 
 ## fix css(set layout)
+
+## create edit page
+
+## html 에서 put ,delete 사용하고싶을때
+
+npm install method-override

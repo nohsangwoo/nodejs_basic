@@ -69,7 +69,7 @@ app.get('/write', (req, res) => {
 // post request 처리
 app.post('/add', (req, res) => {
   //   res.sendFile(__dirname + 'add.html');
-  console.log(req.body);
+  //   console.log(req.body);
   const { title, date } = req.body;
   //   counter에서 현재 저장된 총 게시물의 갯수를 불러옴
   db.collection('counter').findOne(
@@ -161,6 +161,26 @@ app.get('/detail/:id', (req, res) => {
     }
     res.render('detail', { data: result });
   });
+});
+
+app.put('/edit', (req, res) => {
+  console.log(req.body);
+  const { _id, title, date } = req.body;
+  db.collection('post').updateOne(
+    { id: _id },
+    { $set: { title, date } },
+    (error, result) => {
+      if (error || !result) {
+        if (error) {
+          return console.log(error);
+        } else {
+          return console.log('not Found');
+        }
+      }
+      console.log(_id + '번 업데이트 성공');
+    }
+  );
+  //   res.render('edit', { data: req.body });
 });
 
 // 이상한 주소로 들어가면 notFound 출력
