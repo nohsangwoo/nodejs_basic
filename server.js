@@ -5,6 +5,10 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 require('dotenv').config();
 
+// 미들웨어 추가
+// public 폴더를 사용할것이다 라는 의미
+app.use('/public', express.static('public'));
+
 // 생성하려는 PORT번호 설정
 PORT = 5000;
 

@@ -178,3 +178,5 @@ https://www.mongodb.com/cloud/atlas/lp/try2?utm_source=google&utm_campaign=gs_ap
 ## notFound page 처리
 
 ## parameter 전달 및 받아오는법 리마인드
+
+## fix css(set layout)

@@ -16,14 +16,16 @@
       crossorigin="anonymous"
     />
 
-    <title>Hello, world!</title>
+    <link rel="stylesheet" href="/public/main.css" />
+
+    <title>list page</title>
   </head>
   <body>
     <%- include('nav') %>
 
-    <h4 class="ml-2 my-3">Todo List from mongoDB server</h4>
+    <h4 class="ml-2 my-3 text-center">Todo List from mongoDB server</h4>
 
-    <article style="padding: 30px">
+    <article class="container">
       <ul class="list-group">
         <% posts.forEach((post,index)=>{ %>
         <li
@@ -33,7 +35,7 @@
             border: 1px solid black;
             margin-bottom: 10px;
           "
-          class="list-group-item list-<%= post._id %>"
+          class="p-4 list-group-item list-<%= post._id %>"
         >
           <p>_id: <%= post._id %></p>
           <h4>할일 제목 : <%= post.title %></h4>
@@ -43,9 +45,8 @@
           <!-- data-(전달되는 변수명): ,즉 받아올땐 "data-"는 제외되고 "id"란 변수명에 값이 넣어져서 전달됨 -->
           <button
             data-id="<%= post._id %>"
-            class="delete"
             type="button"
-            class="btn btn-dark"
+            class="btn btn-danger delete"
           >
             삭제
           </button>
