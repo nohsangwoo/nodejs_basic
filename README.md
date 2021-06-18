@@ -159,3 +159,7 @@ https://www.mongodb.com/cloud/atlas/lp/try2?utm_source=google&utm_campaign=gs_ap
 - 새로고침 없이 서버에 요청하는걸 도와주는 JS문법
 
 ## ajax와 jquery를 조합하여 server api로 변수를 전달하고 해당 변수를 기준으로 mongoDB에 있는 데이터 삭제
+
+## 요청 성공과 실패시 핸들링
+
+## 서버에서 삭제된 현황 프론트에서 사용자경험이 좋게 dom 제어

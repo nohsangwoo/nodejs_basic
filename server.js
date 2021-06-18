@@ -132,8 +132,11 @@ app.delete('/delete', (req, res) => {
 
   db.collection('post').deleteOne({ _id: +req.body._id }, (error, result) => {
     if (error) {
+      req.status(400).send({ message: '삭제 실패했습니다' });
       return console.log(error);
     }
     console.log(req.body._id + '번 내용 삭제 완료');
+    // 응답코드 200을 front로 보내라는 뜻이다.
+    res.status(200).send({ message: '삭제 성공했습니다' });
   });
 });

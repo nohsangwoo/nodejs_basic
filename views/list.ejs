@@ -60,7 +60,7 @@
             border: 1px solid black;
             margin-bottom: 10px;
           "
-          class="list-group-item"
+          class="list-group-item list-<%= post._id %>"
         >
           <p>_id: <%= post._id %></p>
           <h4>할일 제목 : <%= post.title %></h4>
@@ -88,6 +88,8 @@
       $('.delete').click(e => {
         const _id = e.target.dataset.id;
 
+        const thisDom = $('.list-' + _id);
+
         // ajax기본문법
         // 서버에 새로고침없이 DELETE요청한다는 의미
         $.ajax({
@@ -95,7 +97,16 @@
           url: '/delete',
           data: { _id },
           // 요청이 성공하면 done의 내용을 실행한다.
-        }).done(result => {});
+        })
+          .done(result => {
+            // 현재 click이벤트가 작동된 html의 태그를 찾아서 서서히 안보이게 해라
+            thisDom.fadeOut();
+          })
+          // 요청이 실패시 실핸되는 코드
+          // arg1: , arg2: 서버에서 받은 응답코드, agr3: 서버에서 받은 에러 메시지
+          .fail((xhr, textStatus, errorThrown) => {
+            console.log(xhr, textStatus, errorThrown);
+          });
       });
     </script>
 
