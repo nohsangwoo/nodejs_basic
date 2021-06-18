@@ -157,3 +157,5 @@ https://www.mongodb.com/cloud/atlas/lp/try2?utm_source=google&utm_campaign=gs_ap
 ## use AJAX
 
 - 새로고침 없이 서버에 요청하는걸 도와주는 JS문법
+
+## ajax와 jquery를 조합하여 server api로 변수를 전달하고 해당 변수를 기준으로 mongoDB에 있는 데이터 삭제

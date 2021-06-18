@@ -65,7 +65,17 @@
           <p>_id: <%= post._id %></p>
           <h4>할일 제목 : <%= post.title %></h4>
           <p>할일 마감날짜: <%= post.date %></p>
-          <button type="button" class="btn btn-dark">삭제</button>
+
+          <!-- data-id : 버튼을 누를때 실행되는 함수에 해당 변수 전달 -->
+          <!-- data-(전달되는 변수명): ,즉 받아올땐 "data-"는 제외되고 "id"란 변수명에 값이 넣어져서 전달됨 -->
+          <button
+            data-id="<%= post._id %>"
+            class="delete"
+            type="button"
+            class="btn btn-dark"
+          >
+            삭제
+          </button>
         </li>
         <% }) %>
       </ul>
@@ -75,14 +85,18 @@
 
     <!-- Jquery를 이용한 ajax사용 -->
     <script>
-      // ajax기본문법
-      // 서버에 새로고침없이 DELETE요청한다는 의미
-      $.ajax({
-        method: 'DELETE',
-        url: '/delete',
-        data: '게시물 번호',
-        // 요청이 성공하면 done의 내용을 실행한다.
-      }).done(result => {});
+      $('.delete').click(e => {
+        const _id = e.target.dataset.id;
+
+        // ajax기본문법
+        // 서버에 새로고침없이 DELETE요청한다는 의미
+        $.ajax({
+          method: 'DELETE',
+          url: '/delete',
+          data: { _id },
+          // 요청이 성공하면 done의 내용을 실행한다.
+        }).done(result => {});
+      });
     </script>
 
     <!-- Optional JavaScript; choose one of the two! -->

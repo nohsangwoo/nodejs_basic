@@ -127,5 +127,13 @@ app.get('/list', (req, res) => {
 
 // delete
 app.delete('/delete', (req, res) => {
-  console.log(req.body);
+  //   const getId = +req?.body?._id;
+  console.log('on delete', req.body);
+
+  db.collection('post').deleteOne({ _id: +req.body._id }, (error, result) => {
+    if (error) {
+      return console.log(error);
+    }
+    console.log(req.body._id + '번 내용 삭제 완료');
+  });
 });
