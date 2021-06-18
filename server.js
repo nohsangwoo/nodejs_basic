@@ -128,7 +128,7 @@ app.get('/list', (req, res) => {
 // delete
 app.delete('/delete', (req, res) => {
   //   const getId = +req?.body?._id;
-  console.log('on delete', req.body);
+  //   console.log('on delete', req.body);
 
   db.collection('post').deleteOne({ _id: +req.body._id }, (error, result) => {
     if (error) {
@@ -141,6 +141,20 @@ app.delete('/delete', (req, res) => {
   });
 });
 
-app.get('/detail', (req, res) => {
-  res.render('detail');
+// detail뒤에 붙는 값은 parameter처리
+app.get('/detail/:id', (req, res) => {
+  const _id = +req?.params?.id;
+
+  db.collection('post').findOne({ _id }, (error, result) => {
+    if (error) {
+      //   res.sendStatus(404, { message: 'not found page' });
+      //   res.send('not Found');
+      return console.log(error);
+    }
+    // console.log('result& error', result, error);
+    if (!result) {
+      return res.render('notFoundpage');
+    }
+    res.render('detail', { data: result });
+  });
 });

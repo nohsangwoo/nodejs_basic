@@ -174,3 +174,7 @@ https://www.mongodb.com/cloud/atlas/lp/try2?utm_source=google&utm_campaign=gs_ap
   oo - <%- include('./nav.ejs') %> // 또는 이런방식으로도 사용됨
 
 ## 모든파일 ejs파일로 변경
+
+## notFound page 처리
+
+## parameter 전달 및 받아오는법 리마인드
