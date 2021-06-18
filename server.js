@@ -153,8 +153,14 @@ app.get('/detail/:id', (req, res) => {
     }
     // console.log('result& error', result, error);
     if (!result) {
-      return res.render('notFoundpage');
+      return res.render('notFound');
     }
     res.render('detail', { data: result });
   });
+});
+
+// 이상한 주소로 들어가면 notFound 출력
+// notfound 처리는 항상 마지막에 위치해야함
+app.get('/:notfoundparams', (req, res) => {
+  res.render('notFound');
 });
