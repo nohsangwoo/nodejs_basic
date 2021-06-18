@@ -140,3 +140,7 @@ app.delete('/delete', (req, res) => {
     res.status(200).send({ message: '삭제 성공했습니다' });
   });
 });
+
+app.get('/detail', (req, res) => {
+  res.render('detail.ejs');
+});
