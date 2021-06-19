@@ -186,3 +186,11 @@ https://www.mongodb.com/cloud/atlas/lp/try2?utm_source=google&utm_campaign=gs_ap
 ## html 에서 put ,delete 사용하고싶을때
 
 npm install method-override
+
+## edit 구현
+
+## 기본적인 스크립트 공격 방어
+
+https://www.npmjs.com/package/sanitize-html
+
+- npm i sanitize-html

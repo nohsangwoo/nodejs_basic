@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
-app.use(express.urlencoded({ extended: true }));
+var sanitizeHtml = require('sanitize-html');
+
+//dydals5678.tistory.com/99 [아빠개발자의 노트]
+출처: https: app.use(express.urlencoded({ extended: true }));
 // ejs사용하겠다 선언
 app.set('view engine', 'ejs');
 require('dotenv').config();
@@ -164,20 +167,33 @@ app.get('/detail/:id', (req, res) => {
 });
 
 app.put('/edit', (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
+
   const { _id, title, date } = req.body;
+
+  console.log(_id, title, date);
+  console.log(typeof _id);
+  // return;
+
   db.collection('post').updateOne(
-    { id: _id },
-    { $set: { title, date } },
+    { _id: +_id },
+    // 기본적인 스크립트 공격방어를 위해 sanitizeHtml 적용
+    { $set: { title: sanitizeHtml(title), date: sanitizeHtml(date) } },
     (error, result) => {
+      // console.log(error, result);
       if (error || !result) {
         if (error) {
+          res.status(400);
           return console.log(error);
         } else {
+          res.status(400);
           return console.log('not Found');
         }
       }
       console.log(_id + '번 업데이트 성공');
+      // 프론트의 성공시 작동하는 done함수를 실행시키려면 성공했다는 응답코드를 보내야함
+      res.status(200).send({ message: '수정 성공했습니다' });
+      // res.render('/');
     }
   );
   //   res.render('edit', { data: req.body });
