@@ -204,3 +204,9 @@ npm install passport passport-local express-session
 ## 로그인 페이지 제작
 
 ## 세션 미들웨어 적용
+
+## password의 암호화는 나중에 적용
+
+## 암호화를 구현 by bcrypt
+
+- 근데 이거 토이프로젝트라 그냥 넘어갈꺼임

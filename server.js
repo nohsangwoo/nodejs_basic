@@ -251,19 +251,35 @@ passport.use(
       // 아이디 비번 말고도 다른것을 검증 하고싶을때 옵션
       passReqToCallback: false,
     },
+    // 사용자에게 입력받은 아이디와 비번을 실제로 DB의 아이디와 비번과 비교하는 실제코드
     function (id, pw, done) {
       //console.log(id, pw);
+      // done: 은 3개의 parameter를 가짐
+      // param1: server error
+      // param2: 성공여부의 결과
+      // param3: 실패시 에라메시지
       db.collection('login').findOne({ id: id }, function (error, result) {
         if (error) return done(error);
 
-        if (!result)
-          return done(null, false, { message: '존재하지않는 아이디요' });
+        if (!result) return done(null, false, { message: 'doesnt exist ID' });
         if (pw === result.pw) {
           return done(null, result);
         } else {
-          return done(null, false, { message: '비번틀렸어요' });
+          return done(null, false, { message: 'password is wrong' });
         }
       });
     }
   )
 );
+
+// id를 이용하여 세션데이터 만들기
+// 보통 id를 가지고 장난침
+// 세선데이터를 만들고 쿠키로 보냄
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+
+// 이 세션을 가진사람을 찾아달라고 할때 씀
+passport.deserializeUser(function (아이디, done) {
+  done(null, {});
+});
