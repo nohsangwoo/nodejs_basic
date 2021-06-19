@@ -194,3 +194,13 @@ npm install method-override
 https://www.npmjs.com/package/sanitize-html
 
 - npm i sanitize-html
+
+## sessoion 인증 방식 로그인 구현
+
+npm install passport passport-local express-session
+
+- 사용 방식대로 세션관련 미들웨어 사용 설정
+
+## 로그인 페이지 제작
+
+## 세션 미들웨어 적용

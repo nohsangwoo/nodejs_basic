@@ -199,8 +199,71 @@ app.put('/edit', (req, res) => {
   //   res.render('edit', { data: req.body });
 });
 
+// about session
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const session = require('express-session');
+
+// app.use : 미들웨어를 사용하겠다는 뜻
+app.use(
+  session({ secret: '비밀코드', resave: true, saveUninitialized: false })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('/login', (req, res) => {
+  res.render('login');
+});
+
+// passport를 이용하려 로그인 인증을 도움받음
+app.post(
+  '/login',
+  // local이란 방식으로 로그인 인증 시도,
+  // 성공하면 req,res처리 , 로그인 실패하면 failureRedirect를 이용하여 fail경로로 리다이렉트시켜줌
+  passport.authenticate('local', {
+    failureRedirect: '/fail',
+  }),
+  (req, res) => {
+    // 로그인 성공시 기본 경로로 보내달라
+    res.redirect('/');
+  }
+);
+
+app.get('/fail', (req, res) => {
+  res.render('fail');
+});
+
 // 이상한 주소로 들어가면 notFound 출력
 // notfound 처리는 항상 마지막에 위치해야함
 app.get('/:notfoundparams', (req, res) => {
   res.render('notFound');
 });
+
+// 아이디 비번을 검사해줌
+passport.use(
+  new LocalStrategy(
+    {
+      // form에서 입력한 name값을 매칭
+      usernameField: 'id',
+      passwordField: 'pw',
+      // 로그인후 세션을 저장할것인지 세팅
+      session: true,
+      // 아이디 비번 말고도 다른것을 검증 하고싶을때 옵션
+      passReqToCallback: false,
+    },
+    function (id, pw, done) {
+      //console.log(id, pw);
+      db.collection('login').findOne({ id: id }, function (error, result) {
+        if (error) return done(error);
+
+        if (!result)
+          return done(null, false, { message: '존재하지않는 아이디요' });
+        if (pw === result.pw) {
+          return done(null, result);
+        } else {
+          return done(null, false, { message: '비번틀렸어요' });
+        }
+      });
+    }
+  )
+);
