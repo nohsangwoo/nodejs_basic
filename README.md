@@ -253,3 +253,5 @@ server에서 받아올땐 req.query
 ## mongoDB 에서의 검색 조건 주기 search부분 참고
 
 - search index 생성후 사용가능
+
+## 해당 글을 쓴사람만 삭제 가능하게 구햔

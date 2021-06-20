@@ -76,12 +76,12 @@ app.get('/', isLogin, (req, res) => {
   res.render('mypage', { user: req.user });
 });
 
-app.get('/write', (req, res) => {
+app.get('/write', isLogin, (req, res) => {
   res.render('write');
 });
 
 // post request 처리
-app.post('/add', (req, res) => {
+app.post('/add', isLogin, (req, res) => {
   //   res.sendFile(__dirname + 'add.html');
   //   console.log(req.body);
   const { title, date } = req.body;
@@ -92,42 +92,45 @@ app.post('/add', (req, res) => {
       if (error) {
         return console.log(error);
       }
-      console.log(result);
+      // console.log(result);
+      // console.log(req.user);
+      // return;
       let prevTotalPost = result.totalPost;
+
+      const insertContents = {
+        _id: prevTotalPost + 1,
+        title,
+        date,
+        admin: req.user._id,
+      };
 
       // post라는 collection에 하나를 저장할것임
       //   총게시물 개수 +1로 아이디를 지정하고 나머지 데이터 저장
-      db.collection('post').insertOne(
-        { _id: prevTotalPost + 1, title, date },
-        (error, result) => {
-          console.log('DB 저장완료');
+      db.collection('post').insertOne(insertContents, (error, result) => {
+        // console.log('DB 저장완료');
 
-          //   counter라는 콜렉션에 있는 totalPost 라는 항목도 1 증가시켜주기(수정)
-          //  arg1: 수정할 데이터 조건, arg2:수정값, ags3: 결과 처리
-          db.collection('counter').updateOne(
-            { name: 'numberOfPost' },
-            // update operator
-            // $set :{변결할 변수 : 변경할 값}
-            // $inc(증가)
-            // min(기존값보다 적을때만 변경)
-            // rename(key값 이름 변경)
-            // ...
-            { $inc: { totalPost: 1 } },
-            (error, result) => {
-              if (error) {
-                return console.log(error);
-              }
-              console.log('counter 증가 완료');
+        //   counter라는 콜렉션에 있는 totalPost 라는 항목도 1 증가시켜주기(수정)
+        //  arg1: 수정할 데이터 조건, arg2:수정값, ags3: 결과 처리
+        db.collection('counter').updateOne(
+          { name: 'numberOfPost' },
+          // update operator
+          // $set :{변결할 변수 : 변경할 값}
+          // $inc(증가)
+          // min(기존값보다 적을때만 변경)
+          // rename(key값 이름 변경)
+          // ...
+          { $inc: { totalPost: 1 } },
+          (error, result) => {
+            if (error) {
+              return console.log(error);
             }
-          );
-        }
-      );
-
-      //   db.collection('counter').
+            console.log('counter 증가 완료');
+          }
+        );
+      });
     }
   );
-
-  res.send('전송완료');
+  res.redirect('/');
 });
 
 // ejs를 사용하는 list 요청처리
@@ -148,15 +151,24 @@ app.get('/list', (req, res) => {
 app.delete('/delete', (req, res) => {
   //   const getId = +req?.body?._id;
   //   console.log('on delete', req.body);
+  // console.log(req.user, req.body);
+  // return;
+  const deleteCondition = {
+    _id: +req.body._id,
+    admin: req.user._id,
+  };
 
-  db.collection('post').deleteOne({ _id: +req.body._id }, (error, result) => {
-    if (error) {
-      req.status(400).send({ message: '삭제 실패했습니다' });
-      return console.log(error);
-    }
-    console.log(req.body._id + '번 내용 삭제 완료');
-    // 응답코드 200을 front로 보내라는 뜻이다.
-    res.status(200).send({ message: '삭제 성공했습니다' });
+  // let isExist = true;
+  db.collection('post').findOne(deleteCondition, (error, isExist) => {
+    db.collection('post').deleteOne(deleteCondition, (error, result) => {
+      // console.log('결과:', result);
+      if (!isExist) {
+        res.status(400).send({ message: '삭제 실패했습니다' });
+      } else {
+        // 응답코드 200을 front로 보내라는 뜻이다.
+        res.status(200).send({ message: '삭제 성공했습니다' });
+      }
+    });
   });
 });
 
@@ -343,5 +355,13 @@ passport.deserializeUser(function (id, done) {
     console.log('check deserialize DB collection', result);
     // 이것은 이제 req.user에 저장됨
     done(null, result);
+  });
+});
+
+app.post('/register', (req, res) => {
+  const { id, pw } = req.body;
+  // console.log(req.body);
+  db.collection('login').insertOne({ id, pw }, (error, result) => {
+    res.redirect('/');
   });
 });

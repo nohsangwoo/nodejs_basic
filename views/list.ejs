@@ -122,6 +122,7 @@
           // 요청이 성공하면 done의 내용을 실행한다.
         })
           .done(result => {
+            console.log('result', result);
             // 현재 click이벤트가 작동된 html의 태그를 찾아서 서서히 안보이게 해라
             thisDom.fadeOut();
           })
