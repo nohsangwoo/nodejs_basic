@@ -249,3 +249,7 @@ server에서 받아올땐 req.query
 ## post collection의 title필드를 인덱싱하기
 
 - for search
+
+## mongoDB 에서의 검색 조건 주기 search부분 참고
+
+- search index 생성후 사용가능

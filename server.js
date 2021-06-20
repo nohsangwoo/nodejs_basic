@@ -242,8 +242,26 @@ app.get('/mypage', isLogin, (req, res) => {
 app.get('/search', (req, res) => {
   console.log(req?.query?.value);
   const term = req?.query?.value;
+  const searchCondition = [
+    {
+      $search: {
+        index: 'titleSearch',
+        text: {
+          query: req.query.value,
+          path: 'title', // title date 둘다 찾고싶으면['title' 'date']
+        },
+      },
+    },
+    // 정렬 방법 1 or -1
+    { $sort: { _id: 1 } },
+    // 5개의 검색결과만 가져와달라는 의미
+    // { $limit: 5 },
+    // 검색조건 더 주기
+    // { $project: { title: 1, _id: 0, score: { $meta: 'searchScore' } } },
+  ];
   db.collection('post')
-    .find({ title: term })
+    // search Index를 이용하여 검색할때 사용
+    .aggregate(searchCondition)
     .toArray((error, result) => {
       console.log(result);
       if (error) {
