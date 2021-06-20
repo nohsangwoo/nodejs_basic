@@ -210,3 +210,5 @@ npm install passport passport-local express-session
 ## 암호화를 구현 by bcrypt
 
 - 근데 이거 토이프로젝트라 그냥 넘어갈꺼임
+
+## 로그인 한 유저만 접속 가능한 mypage 제작

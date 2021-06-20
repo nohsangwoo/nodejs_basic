@@ -233,12 +233,27 @@ app.get('/fail', (req, res) => {
   res.render('fail');
 });
 
+app.get('/mypage', isLogin, (req, res) => {
+  console.log('mypage get', req.user);
+  res.render('mypage', { user: req.user });
+});
+
 // 이상한 주소로 들어가면 notFound 출력
 // notfound 처리는 항상 마지막에 위치해야함
 app.get('/:notfoundparams', (req, res) => {
   res.render('notFound');
 });
 
+// 로그인 했는지 여부
+function isLogin(req, res, next) {
+  console.log('islogin?', req.user);
+  if (req.user) {
+    // next의 뜻은 next()로 통과 시켜달라는 의미
+    next();
+  } else {
+    res.send('this user is logged in');
+  }
+}
 // 아이디 비번을 검사해줌
 passport.use(
   new LocalStrategy(
@@ -276,10 +291,17 @@ passport.use(
 // 보통 id를 가지고 장난침
 // 세선데이터를 만들고 쿠키로 보냄
 passport.serializeUser(function (user, done) {
+  console.log('serializeUser', user);
   done(null, user.id);
 });
 
 // 이 세션을 가진사람을 찾아달라고 할때 씀
-passport.deserializeUser(function (아이디, done) {
-  done(null, {});
+// 로그인한 유저의 각종 정보를 DB에서 가져다 쓰기위한 용도
+passport.deserializeUser(function (id, done) {
+  console.log('deserializeUser: ', id);
+  db.collection('login').findOne({ id: id }, function (error, result) {
+    console.log('check deserialize DB collection', result);
+    // 이것은 이제 req.user에 저장됨
+    done(null, result);
+  });
 });
