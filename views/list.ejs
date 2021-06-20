@@ -26,6 +26,16 @@
     <h4 class="ml-2 my-3 text-center">Todo List from mongoDB server</h4>
 
     <article class="container">
+      <div class="container input-group mb-2">
+        <input class="form-control" id="searchItem" />
+        <button
+          onclick="onSearch()"
+          class="input-group-append btn btn-danger"
+          id="search"
+        >
+          검색
+        </button>
+      </div>
       <ul class="list-group">
         <% posts.forEach((post,index)=>{ %>
         <li
@@ -61,6 +71,7 @@
             data-id="<%= post._id %>"
             type="button"
             class="btn btn-danger delete"
+            onclick="onDelete('<%= post._id %>')"
           >
             삭제
           </button>
@@ -84,10 +95,23 @@
 
     <!-- Jquery를 이용한 ajax사용 -->
     <script>
+      // 검색기능
+      const onSearch = () => {
+        const searchBTN = document.querySelector('#search');
+        console.log(searchBTN);
+        const term = document.querySelector('#searchItem').value;
+
+        // console.log(term.value);
+
+        // 해당 url로 이동해달라
+        window.location.replace('/search?value=' + term);
+      };
+
       // 삭제 기능
-      $('.delete').click(e => {
-        const _id = e.target.dataset.id;
+      const onDelete = _id => {
         const thisDom = $('.list-' + _id);
+        // thisDom.fadeOut();
+        // return;
 
         // ajax기본문법
         // 서버에 새로고침없이 DELETE요청한다는 의미
@@ -106,7 +130,7 @@
           .fail((xhr, textStatus, errorThrown) => {
             console.log(xhr, textStatus, errorThrown);
           });
-      });
+      };
 
       // 수정기능
       const onUpdate = _id => {
@@ -127,7 +151,7 @@
         const compareDate = prevDate === date;
         // console.log(prevTitle === title);
 
-        console.log(compareTitle, compareDate);
+        // console.log(compareTitle, compareDate);
 
         if (compareTitle && compareDate) {
           alert('변경내용이 없어 update 중지');

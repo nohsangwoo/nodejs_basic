@@ -1,6 +1,18 @@
 const express = require('express');
 const app = express();
-var sanitizeHtml = require('sanitize-html');
+const sanitizeHtml = require('sanitize-html');
+
+// about session
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const session = require('express-session');
+
+// app.use : 미들웨어를 사용하겠다는 뜻
+app.use(
+  session({ secret: '비밀코드', resave: true, saveUninitialized: false })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 //dydals5678.tistory.com/99 [아빠개발자의 노트]
 출처: https: app.use(express.urlencoded({ extended: true }));
@@ -59,10 +71,9 @@ app.get('/beauty', (req, res) => {
 
 // 요청에대한 응답으로 파일을 보낼수 있음
 // __dirname : 현재 디렉토리 경로
-app.get('/', (req, res) => {
-  // sendFile 사용방법
-  //   res.sendFile(__dirname + '/index.html');
-  res.render('index');
+app.get('/', isLogin, (req, res) => {
+  // res.render('index');
+  res.render('mypage', { user: req.user });
 });
 
 app.get('/write', (req, res) => {
@@ -122,6 +133,7 @@ app.post('/add', (req, res) => {
 // ejs를 사용하는 list 요청처리
 app.get('/list', (req, res) => {
   // 해당 post collection에 포함된 모든 데이터를 가져온다
+  // 모든 데이터를 찾아달라할때 자주 사용됨 find().toArray()
   db.collection('post')
     .find()
     .toArray((error, result) => {
@@ -199,18 +211,6 @@ app.put('/edit', (req, res) => {
   //   res.render('edit', { data: req.body });
 });
 
-// about session
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const session = require('express-session');
-
-// app.use : 미들웨어를 사용하겠다는 뜻
-app.use(
-  session({ secret: '비밀코드', resave: true, saveUninitialized: false })
-);
-app.use(passport.initialize());
-app.use(passport.session());
-
 app.get('/login', (req, res) => {
   res.render('login');
 });
@@ -234,8 +234,29 @@ app.get('/fail', (req, res) => {
 });
 
 app.get('/mypage', isLogin, (req, res) => {
-  console.log('mypage get', req.user);
+  // console.log('mypage get', req.user);
   res.render('mypage', { user: req.user });
+});
+
+// 검색기능
+app.get('/search', (req, res) => {
+  console.log(req?.query?.value);
+  const term = req?.query?.value;
+  db.collection('post')
+    .find({ title: term })
+    .toArray((error, result) => {
+      console.log(result);
+      if (error) {
+        return console.log(error);
+      }
+      console.log('검색된 내용: ', result.length);
+
+      if (result.length !== 0) {
+        res.render('search', { posts: result });
+      } else {
+        res.render('searchError');
+      }
+    });
 });
 
 // 이상한 주소로 들어가면 notFound 출력
@@ -251,7 +272,8 @@ function isLogin(req, res, next) {
     // next의 뜻은 next()로 통과 시켜달라는 의미
     next();
   } else {
-    res.send('this user is logged in');
+    res.render('login');
+    // res.send('this user is logged in');
   }
 }
 // 아이디 비번을 검사해줌

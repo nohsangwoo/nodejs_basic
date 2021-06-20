@@ -236,3 +236,16 @@ npm install passport passport-local express-session
 8. 유효성 체크가 진행됐다면 이후 관련내용 진행한다.
 
 (위 내용은 토이 프로젝트라서 간단하게 진행됨 실제 prod에선 다르게 진행됨)
+
+## query string으로 변수 전달하기 (search)
+
+server에서 받아올땐 req.query
+
+## Home("/") route만 로그인해야만 접속가능하게 설정
+
+- 다른 부분도 이와 마찬가지 방법으로 로그인 인증 설정 가능
+- 토이프로젝트라서 임시로 넘김
+
+## post collection의 title필드를 인덱싱하기
+
+- for search
