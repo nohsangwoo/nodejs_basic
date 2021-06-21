@@ -24,6 +24,18 @@ require('dotenv').config();
 // public 폴더를 사용할것이다 라는 의미
 app.use('/public', express.static('public'));
 
+// 로그인 했는지 여부
+function isLogin(req, res, next) {
+  console.log('islogin?', req.user);
+  if (req.user) {
+    // next의 뜻은 next()로 통과 시켜달라는 의미
+    next();
+  } else {
+    res.render('login');
+    // res.send('this user is logged in');
+  }
+}
+
 // 생성하려는 PORT번호 설정
 PORT = 5000;
 
@@ -295,17 +307,6 @@ app.get('/:notfoundparams', (req, res) => {
   res.render('notFound');
 });
 
-// 로그인 했는지 여부
-function isLogin(req, res, next) {
-  console.log('islogin?', req.user);
-  if (req.user) {
-    // next의 뜻은 next()로 통과 시켜달라는 의미
-    next();
-  } else {
-    res.render('login');
-    // res.send('this user is logged in');
-  }
-}
 // 아이디 비번을 검사해줌
 passport.use(
   new LocalStrategy(
@@ -365,3 +366,10 @@ app.post('/register', (req, res) => {
     res.redirect('/');
   });
 });
+
+// shop.js파일 import
+// "/shop" 이하의 경로로 접속하면 아래 미들웨어를 적용한다
+// 이 미들웨어는 라우터이기때문에 shop에 관련된 라우팅을 관리한다
+app.use('/shop', require('./routes/shop.js'));
+
+app.use('/board/sub', isLogin, require('./routes/board.js'));
