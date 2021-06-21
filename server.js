@@ -7,6 +7,38 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 
+// for upload
+const multer = require('multer');
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/image');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+
+var path = require('path');
+
+var upload = multer({
+  storage: storage,
+  //   파일 확장자 제한
+  fileFilter: function (req, file, callback) {
+    var ext = path.extname(file.originalname);
+    if (ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg') {
+      return callback(new Error('PNG, JPG만 업로드하세요'));
+    }
+    callback(null, true);
+  },
+  //   파일 사이즈 제한
+  limits: {
+    fileSize: 1024 * 1024,
+  },
+});
+// end of upload settings
+
+var imageFolder = './public/image';
+var fs = require('fs');
 // app.use : 미들웨어를 사용하겠다는 뜻
 app.use(
   session({ secret: '비밀코드', resave: true, saveUninitialized: false })
@@ -14,8 +46,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-//dydals5678.tistory.com/99 [아빠개발자의 노트]
-출처: https: app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 // ejs사용하겠다 선언
 app.set('view engine', 'ejs');
 require('dotenv').config();
@@ -37,7 +68,7 @@ function isLogin(req, res, next) {
 }
 
 // 생성하려는 PORT번호 설정
-PORT = 5000;
+PORT = 8080;
 
 // mongoDB사용하기위한 라이브러리 호출
 const MongoClient = require('mongodb').MongoClient;
@@ -301,12 +332,6 @@ app.get('/search', (req, res) => {
     });
 });
 
-// 이상한 주소로 들어가면 notFound 출력
-// notfound 처리는 항상 마지막에 위치해야함
-app.get('/:notfoundparams', (req, res) => {
-  res.render('notFound');
-});
-
 // 아이디 비번을 검사해줌
 passport.use(
   new LocalStrategy(
@@ -373,3 +398,40 @@ app.post('/register', (req, res) => {
 app.use('/shop', require('./routes/shop.js'));
 
 app.use('/board/sub', isLogin, require('./routes/board.js'));
+
+app.get('/upload', (req, res) => {
+  res.render('upload');
+});
+
+// 파일 업로드 방법
+// upload.single('profile')  // input type=file 인것의 name
+// upload.array('profile', 10), // input name과 , 전송할 파일의 최대 갯수
+// 파일 여러개 보낼때 html input도 복수 선택 가능하게 설정해줘야함 검색  ㄱ ㄱ
+app.post('/upload', upload.single('profile'), function (req, res) {
+  res.redirect('checkImages');
+});
+
+// app.get('/image', (req, res) => {
+//   fs.readdir(imageFolder, function (error, filelist) {
+//     console.log(filelist);
+//     res.send(filelist);
+//   });
+// });
+
+app.get('/checkImages', (req, res) => {
+  fs.readdir(imageFolder, function (error, filelist) {
+    // console.log(filelist);
+    // res.send(filelist);
+    res.render('checkImages', { files: filelist });
+  });
+});
+
+app.get('/image/:imageName', function (req, res) {
+  res.sendFile(__dirname + '/public/image/' + req.params.imageName);
+});
+
+// 이상한 주소로 들어가면 notFound 출력
+// notfound 처리는 항상 마지막에 위치해야함
+app.get('/:notfoundparams', (req, res) => {
+  res.render('notFound');
+});

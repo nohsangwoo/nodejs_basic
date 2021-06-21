@@ -261,3 +261,42 @@ server에서 받아올땐 req.query
 - 여러개의 api들을 각 종률별로 분류하기
 
 ## 분할한 api에 각각 미들웨어 적용 또는 일괄 미들웨어 적용 방법
+
+## google cloude에 배포해보기
+
+- app.yaml: 구글 클라우드 세팅 파일
+- 기본 포트번호 8080 로 설정하기
+
+## google cloud platform에서
+
+- 프로젝트 선택
+- app engine선택 후 진행
+- google sdk 설치(gcloud 명령어 생성됨)
+- gcloud init 진행(로컬 컴퓨터 로그인 및 프로젝트 선택)
+- gcloud app deploy 진행
+- 결제 카드 관리
+
+## google cloud update
+
+- gcloud init 진행(로컬 컴퓨터 로그인 및 프로젝트 선택)
+- gcloud app deploy 진행
+
+## 주소 확인
+
+App Engine – 대시보드에서 확인가능
+
+## image upload server
+
+- upload.ejs
+
+## form 에서 일반 파일 업로드시 속성 설정
+
+```
+<form method="POST" action="/upload" enctype="multipart/form-data">
+```
+
+## 이미지 서버로 전송을 위한 multer설치
+
+npm install multer
+
+## image 서버에 업로드 후 업로드된 이미지 로드
